@@ -1,6 +1,3 @@
-using MediatR;
-using Product.Application.Commands.ProductCommand;
-
 namespace Product.API.Controllers;
 
 [Route("api/v1/[controller]")]
@@ -27,5 +24,12 @@ public class ProductController : ControllerBase
     [HttpPut]
     [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<bool>> UpdateProduct([FromBody] UpdateProductCommand command) => Ok(await _mediator.Send(command));
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<bool>> DeleteProduct(int id) => Ok(await _mediator.Send(new DeleteProductCommand()
+    {
+        Id = id
+    }));
 
 }

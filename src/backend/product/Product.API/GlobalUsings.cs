@@ -7,3 +7,4 @@ global using Product.Infrastructure;
 global using Product.Application.Commands.ProductCommand;
 global using Product.Infrastructure.Repositories;
 global using Serilog;
+global using MediatR;
