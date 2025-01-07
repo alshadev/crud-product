@@ -1,3 +1,5 @@
+using Product.Application.Queries.ProductQuery;
+
 namespace Product.API.Controllers;
 
 [Route("api/v1/[controller]")]
@@ -15,6 +17,32 @@ public class ProductController : ControllerBase
     public IActionResult Ping()
     {
         return Ok();
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(List<ProductEntity>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult> GetProducts([FromQuery] string name = null, [FromQuery] decimal? startPrice = null, [FromQuery] decimal? endPrice = null) 
+    {
+        var products = await _mediator.Send(new GetProductQuery()
+        {
+            Name = name,
+            StartPrice = startPrice,
+            EndPrice = endPrice
+        });
+
+        return Ok(products);
+    }
+
+    [HttpGet("id")]
+    [ProducesResponseType(typeof(List<ProductEntity>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult> GetProductById(int id) 
+    {
+        var product = await _mediator.Send(new GetProductByIdQuery()
+        {
+            Id = id
+        });
+
+        return Ok(product);
     }
 
     [HttpPost]

@@ -29,7 +29,7 @@ public class ProductRepository : BaseRepository<ProductContext, ProductEntity>, 
         var queryable = FilteredProductQueryable(name, startPrice, endPrice);
 
         var products = await queryable
-            .OrderBy(x => x.Name)
+            .OrderByDescending(x => x.CreatedAt)
             .ToListAsync();
 
         return products;
