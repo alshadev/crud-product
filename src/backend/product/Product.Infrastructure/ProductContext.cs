@@ -12,6 +12,8 @@ public class ProductContext : DbContext, IUnitOfWork
     
     }
 
+    public DbSet<ProductEntity> Products { get; set; }
+
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);

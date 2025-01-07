@@ -401,3 +401,5 @@ FodyWeavers.xsd
 
 # Visual Studio Codd
 *.vscode
+
+*Logs/

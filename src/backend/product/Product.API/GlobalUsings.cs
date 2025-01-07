@@ -1,4 +1,9 @@
-global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore.Diagnostics;
-global using System.Text.Json;
+global using System.Net;
+global using System.Text.Json.Serialization;
+global using Microsoft.EntityFrameworkCore;
+global using Product.Infrastructure;
+global using Product.Application.Commands.ProductCommand;
+global using Product.Infrastructure.Repositories;
+global using Serilog;
