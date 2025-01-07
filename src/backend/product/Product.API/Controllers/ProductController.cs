@@ -22,6 +22,10 @@ public class ProductController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<Guid>> CreateProduct([FromBody] CreateProductCommand command) => Ok(await _mediator.Send(command));
+    public async Task<ActionResult<int>> CreateProduct([FromBody] CreateProductCommand command) => Ok(await _mediator.Send(command));
+
+    [HttpPut]
+    [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<bool>> UpdateProduct([FromBody] UpdateProductCommand command) => Ok(await _mediator.Send(command));
 
 }

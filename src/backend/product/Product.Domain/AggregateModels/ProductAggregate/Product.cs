@@ -16,9 +16,8 @@ public class Product
         CreatedAt = DateTime.UtcNow;
     }
 
-    public void Update(string name, string description, decimal price)
+    public void Update(string description, decimal price)
     {
-        SetName(name);
         SetDescription(description);
         SetPrice(price);
     }

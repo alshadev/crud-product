@@ -1,6 +1,3 @@
-
-using Product.Infrastructure.Repositories;
-
 namespace Product.Application.Commands.ProductCommand;
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>

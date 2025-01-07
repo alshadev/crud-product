@@ -9,20 +9,22 @@ var configurationBuilder = new ConfigurationBuilder()
 var configuration = configurationBuilder.Build();
 
 Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
     .MinimumLevel.Verbose()
-    .Enrich.WithProperty("ApplicationContext", "Transaction.API")
+    .Enrich.WithProperty("ApplicationContext", "Product.API")
     .Enrich.WithProcessName()
     .Enrich.WithProcessId()
     .Enrich.WithFunction("Severity", e => $"{e.Level}")
     .Enrich.FromLogContext()
     .WriteTo.Console()
     .WriteTo.File("Logs/Product.API-.log", rollingInterval: RollingInterval.Day)
-    .ReadFrom.Configuration(configuration)
     .CreateLogger();
 
 Log.Information("Configuring web host (Product.API)...");
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
