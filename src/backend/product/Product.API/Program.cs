@@ -1,3 +1,5 @@
+using Product.API.Filters;
+
 string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty;
 
 var configurationBuilder = new ConfigurationBuilder()
@@ -40,7 +42,18 @@ builder.Services.AddCors(options =>
         .AllowCredentials());
 });
 
-builder.Services.AddControllers().AddJsonOptions(options =>
+var filters = new List<Type>()
+{
+    typeof(HttpGlobalExceptionFilter)
+};
+
+builder.Services.AddControllers(options =>
+{
+    foreach (var filter in filters)
+    {
+        options.Filters.Add(filter);
+    }
+}).AddJsonOptions(options => 
 {
     options.JsonSerializerOptions.WriteIndented = true;
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -101,8 +114,8 @@ using (var scope = app.Services.CreateScope())
 
             var strategy = dbContext.Database.CreateExecutionStrategy();
 
-            await strategy.ExecuteAsync(async () => 
-            { 
+            await strategy.ExecuteAsync(async () =>
+            {
                 await dbContext.Database.MigrateAsync();
                 await seed.SeedAsync(dbContext);
             });
