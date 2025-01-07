@@ -1,12 +1,20 @@
-using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Filters;
-
 namespace Product.API.Filters;
 
 public class HttpGlobalExceptionFilter : IExceptionFilter
 {
+    private readonly ILogger<HttpGlobalExceptionFilter> logger;
+
+    public HttpGlobalExceptionFilter(ILogger<HttpGlobalExceptionFilter> logger)
+    {
+        this.logger = logger;
+    }
+
     public void OnException(ExceptionContext context)
     {
+        logger.LogError(new EventId(context.Exception.HResult),
+            context.Exception,
+            context.Exception.Message);
+
         var problemDetails = new ValidationProblemDetails()
         {
             Instance = context.HttpContext.Request.Path,
@@ -14,7 +22,7 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
             Detail = "Please refer to the errors property for additional details."
         };
 
-        problemDetails.Errors.Add("Errors", new string[] { GetInnerExceptionMessage(context.Exception) });
+        problemDetails.Errors.Add("Exceptions", new string[] { GetInnerExceptionMessage(context.Exception) });
 
         context.Result = new BadRequestObjectResult(problemDetails);
         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;

@@ -8,5 +8,6 @@ global using Product.Application.Commands.ProductCommand;
 global using Product.Infrastructure.Repositories;
 global using Serilog;
 global using MediatR;
+global using Microsoft.AspNetCore.Mvc.Filters;
 //use ProductEntity to handle ambigous between reference and class model
 global using ProductEntity = Product.Domain.AggregateModels.ProductAggregate.Product;
