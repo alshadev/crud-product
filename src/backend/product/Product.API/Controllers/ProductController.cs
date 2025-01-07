@@ -33,7 +33,7 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(List<ProductEntity>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult> GetProductById(int id) 
     {
