@@ -23,6 +23,6 @@ public class Product
     }
 
     public void SetName(string name) => Name = string.IsNullOrWhiteSpace(name) ? throw new Exception("Name is mandatory") : name.Trim();
-    public void SetDescription(string description) => Description = description.Trim();
+    public void SetDescription(string description) => Description = description?.Trim();
     public void SetPrice(decimal price) => Price = price <= 0 ? throw new Exception("Price should be greater than 0") : price;
 }

@@ -61,6 +61,7 @@ builder.Services.AddCors(options =>
 {
     options
         .AddPolicy("CorsPolicy", builder => builder.SetIsOriginAllowed((host) => true)
+        .WithOrigins("http://localhost:3000")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());
@@ -133,6 +134,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapDefaultControllerRoute();
 app.MapControllers();
+
+app.UseCors("CorsPolicy"); 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
