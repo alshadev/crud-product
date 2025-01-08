@@ -10,5 +10,11 @@ global using Serilog;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc.Filters;
 global using Product.API.Filters;
+global using System.Text;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
+global using Microsoft.OpenApi.Models;
+global using Microsoft.AspNetCore.Authorization;
+global using Product.Application.Queries.ProductQuery;
 //use ProductEntity to handle ambigous between reference and class model
 global using ProductEntity = Product.Domain.AggregateModels.ProductAggregate.Product;

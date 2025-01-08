@@ -4,6 +4,7 @@ public interface IUserRepository : IBaseRepository<User>
 {
     Task<User> GetByIdAsync(Guid id);
     Task<User> GetByUserNameAsync(string username);
+    Task<User> GetByUsernamePasswordAsync(string username, string password);
 }
 
 public class UserRepository: BaseRepository<IdentityContext, User>, IUserRepository
@@ -26,6 +27,14 @@ public class UserRepository: BaseRepository<IdentityContext, User>, IUserReposit
     {
          var user = await Entities
             .FirstOrDefaultAsync(x => x.Username == username);
+
+        return user;
+    }
+
+    public async Task<User> GetByUsernamePasswordAsync(string username, string password)
+    {
+         var user = await Entities
+            .FirstOrDefaultAsync(x => x.Username == username && x.Password == password);
 
         return user;
     }

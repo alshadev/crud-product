@@ -1,5 +1,3 @@
-using Product.Application.Queries.ProductQuery;
-
 namespace Product.API.Controllers;
 
 [Route("api/v1/[controller]")]
@@ -20,6 +18,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(List<ProductEntity>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult> GetProducts([FromQuery] string name = null, [FromQuery] decimal? startPrice = null, [FromQuery] decimal? endPrice = null) 
     {
@@ -34,6 +33,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(List<ProductEntity>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult> GetProductById(int id) 
     {
@@ -46,18 +46,20 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<int>> CreateProduct([FromBody] CreateProductCommand command) => Ok(await _mediator.Send(command));
 
     [HttpPut]
+    [Authorize]
     [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<bool>> UpdateProduct([FromBody] UpdateProductCommand command) => Ok(await _mediator.Send(command));
 
     [HttpDelete("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<bool>> DeleteProduct(int id) => Ok(await _mediator.Send(new DeleteProductCommand()
     {
         Id = id
     }));
-
 }
