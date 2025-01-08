@@ -11,16 +11,16 @@ var configuration = configurationBuilder.Build();
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configuration)
     .MinimumLevel.Verbose()
-    .Enrich.WithProperty("ApplicationContext", "Product.API")
+    .Enrich.WithProperty("ApplicationContext", "Identity.API")
     .Enrich.WithProcessName()
     .Enrich.WithProcessId()
     .Enrich.WithFunction("Severity", e => $"{e.Level}")
     .Enrich.FromLogContext()
     .WriteTo.Console()
-    .WriteTo.File("Logs/Product.API-.log", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("Logs/Identity.API-.log", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-Log.Information("Configuring web host (Product.API)...");
+Log.Information("Configuring web host (Identity.API)...");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,27 +58,27 @@ builder.Services.AddControllers(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-builder.Services.AddDbContext<ProductContext>(options =>
+builder.Services.AddDbContext<IdentityContext>(options =>
 {
-    options.UseSqlite("Data Source=product.db", opt =>
+    options.UseSqlite("Data Source=identity.db", opt =>
     {
-        opt.MigrationsAssembly(typeof(ProductContext).Assembly.GetName().Name);
+        opt.MigrationsAssembly(typeof(IdentityContext).Assembly.GetName().Name);
     });
 
     options.ConfigureWarnings(x => x.Ignore(RelationalEventId.AmbientTransactionWarning));
 });
 
-builder.Services.AddScoped<DbContext, ProductContext>();
-builder.Services.AddScoped<IDbSeeder<ProductContext>, ProductContextSeed>();
+builder.Services.AddScoped<DbContext, IdentityContext>();
+builder.Services.AddScoped<IDbSeeder<IdentityContext>, IdentityContextSeed>();
 
 builder.Services.AddHttpContextAccessor();
 
 #region Repository
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 #endregion
 
 #region MediatR
-builder.Services.AddMediatR(new MediatRServiceConfiguration().RegisterServicesFromAssemblies(typeof(CreateProductCommandHandler).Assembly));
+builder.Services.AddMediatR(new MediatRServiceConfiguration().RegisterServicesFromAssemblies(typeof(RegisterUserCommandHandler).Assembly));
 #endregion
 
 var app = builder.Build();
@@ -89,6 +89,7 @@ app.UseAuthorization();
 app.MapDefaultControllerRoute();
 app.MapControllers();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -105,10 +106,10 @@ using (var scope = app.Services.CreateScope())
     {
         Task.Run(async () =>
         {
-            var dbContext = scope.ServiceProvider.GetRequiredService<ProductContext>();
-            var seed = scope.ServiceProvider.GetRequiredService<IDbSeeder<ProductContext>>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+            var seed = scope.ServiceProvider.GetRequiredService<IDbSeeder<IdentityContext>>();
 
-            logger.LogInformation("Migrating database associated with context {DbContextName}", typeof(ProductContext).Name);
+            logger.LogInformation("Migrating database associated with context {DbContextName}", typeof(IdentityContext).Name);
 
             var strategy = dbContext.Database.CreateExecutionStrategy();
 
@@ -127,6 +128,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-Log.Information("Starting web host (Product.API)...");
+Log.Information("Starting web host (Identity.API)...");
 
 app.Run();
