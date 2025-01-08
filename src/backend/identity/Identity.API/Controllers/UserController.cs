@@ -21,7 +21,6 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("Register")]
-    [Authorize]
     [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<Guid>> Register([FromBody] RegisterUserCommand command) => Ok(await _mediator.Send(command));
 
