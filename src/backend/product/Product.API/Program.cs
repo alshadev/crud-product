@@ -84,6 +84,8 @@ builder.Services.AddControllers(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddDbContext<ProductContext>(options =>
 {
     options.UseSqlite("Data Source=product.db", opt =>
