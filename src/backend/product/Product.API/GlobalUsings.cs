@@ -16,5 +16,10 @@ global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
 global using Microsoft.AspNetCore.Authorization;
 global using Product.Application.Queries.ProductQuery;
+global using System.Security.Claims;
+global using System.Text.Encodings.Web;
+global using Microsoft.AspNetCore.Authentication;
+global using Microsoft.Extensions.Options;
+global using Product.API.Middlewares;
 //use ProductEntity to handle ambigous between reference and class model
 global using ProductEntity = Product.Domain.AggregateModels.ProductAggregate.Product;

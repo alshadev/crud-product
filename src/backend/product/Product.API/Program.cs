@@ -122,6 +122,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    builder.Services.AddAuthentication("TestScheme")
+        .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options => { });
+};
+
 var app = builder.Build();
 
 app.UseRouting();
@@ -171,3 +177,5 @@ using (var scope = app.Services.CreateScope())
 Log.Information("Starting web host (Product.API)...");
 
 app.Run();
+
+public partial class Program { } 

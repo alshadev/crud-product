@@ -1,0 +1,20 @@
+//use ProductEntity to handle ambigous between reference and class model
+global using ProductEntity = Product.Domain.AggregateModels.ProductAggregate.Product;
+global using Moq;
+global using Product.API.Controllers;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.EntityFrameworkCore;
+global using Product.Infrastructure;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.AspNetCore.Mvc.Testing;
+global using System.Net;
+global using System.Net.Http.Headers;
+global using Product.Test.Infrastructure;
+global using MediatR;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Controllers;
+global using Microsoft.AspNetCore.Mvc.Filters;
+global using Microsoft.Extensions.Logging;
+global using Product.API.Filters;
+global using Product.Application.Commands.ProductCommand;
